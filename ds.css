@@ -18,7 +18,11 @@ html, body {
 .group {
   position: absolute;
   width: 100px;
+<<<<<<< HEAD
   height: 260px;
+=======
+  height: 200px;
+>>>>>>> 56307469b9b66d89f4ae0c213150465d05513a73
   top:0;
   left: 0;
   z-index: 3;
