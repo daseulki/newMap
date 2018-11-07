@@ -154,19 +154,19 @@ const addMarker = (position, add) => {
     infowindow.open(map, marker);
   });
   daum.maps.event.addListener(marker, 'rightclick', (mouseEvent) => {
-    const removeMarker = () => {
-      let index = markers.map(x => x.id).indexOf(marker.id);
-      marker.setMap(null);
-      circles[index].setMap(null);
-      infowindow.close();
-      markers.splice(index, 1);
-      circles.splice(index, 1);
-      infowindows.splice(index, 1);
-    }
-
-    removeMarker();
+    let index = markers.map(x => x.id).indexOf(marker.id);
+    removeMarker(index);
     countMarker();
   });
+  const removeMarker = (index) => {
+    marker.setMap(null);
+    circles[index].setMap(null);
+    infowindow.close();
+    markers.splice(index, 1);
+    circles.splice(index, 1);
+    infowindows.splice(index, 1);
+  }
+
 }
 
 let getGeoData = (level) => {
