@@ -1,26 +1,26 @@
-console.log(daum);
+console.log(kakao);
 
 let markers = [];
 let circles = [];
 let infowindows = [];
 let polygons = [];
 let num = 1;
-let geocoder = new daum.maps.services.Geocoder();
+let geocoder = new kakao.maps.services.Geocoder();
 
 const mapContainer = document.getElementById('map'); // 지도를 표시할 div
 const mapOption = {
-  center: new daum.maps.LatLng(37.48403, 126.894125), // 지도의 중심좌표
+  center: new kakao.maps.LatLng(37.48403, 126.894125), // 지도의 중심좌표
   level: 4, // 지도의 확대 레벨
-  mapTypeId: daum.maps.MapTypeId.ROADMAP // 지도종류
+  mapTypeId: kakao.maps.MapTypeId.ROADMAP // 지도종류
 };
 
 // 지도를 생성한다
-const map = new daum.maps.Map(mapContainer, mapOption);
+const map = new kakao.maps.Map(mapContainer, mapOption);
 
 // 지도 타입 변경 컨트롤을 생성한다
-const mapTypeControl = new daum.maps.MapTypeControl();
+const mapTypeControl = new kakao.maps.MapTypeControl();
 // 지도의 상단 우측에 지도 타입 변경 컨트롤을 추가한다
-map.addControl(mapTypeControl, daum.maps.ControlPosition.TOPRIGHT);
+map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 
 const searchAddrFromCoords = (coords, callback) => {
   // 좌표로 행정동 주소 정보를 요청합니다
@@ -31,11 +31,11 @@ const searchDetailAddrFromCoords = (coords, callback) => {
   geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 }
 
-// const manager = new daum.maps.drawing.DrawingManager({
+// const manager = new kakao.maps.drawing.DrawingManager({
 //   map: map,
 //   drawingMode: [
-//     daum.maps.drawing.OverlayType.MARKER,
-//     daum.maps.drawing.OverlayType.CIRCLE
+//     kakao.maps.drawing.OverlayType.MARKER,
+//     kakao.maps.drawing.OverlayType.CIRCLE
 //   ]
 // });
 
@@ -45,14 +45,14 @@ const shuffle = () => {
 
 const mEvent = () => {
 
-  daum.maps.event.addListener(map, 'click', (mouseEvent) => {
+  kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
     // 클릭한 위치의 좌표
     //mouseEvent.latLng
 
 
 
     searchDetailAddrFromCoords(mouseEvent.latLng, async (result, status) => {
-      if (status === daum.maps.services.Status.OK) {
+      if (status === kakao.maps.services.Status.OK) {
         let detailAddr = !!result[0].road_address ? '<div> 도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
         detailAddr += ' <div> 지번 주소 : ' + result[0].address.address_name + '</div>';
 
@@ -108,7 +108,7 @@ const addMarker = (position, add) => {
   let radius = getRadius()
   let content = '<div class = "hAddr">' + num + '번째 마커 [ ' + group + ' ]</div>' + add;
   // 지도에 원을 표시한다
-  let circle = new daum.maps.Circle({
+  let circle = new kakao.maps.Circle({
     center: position, // 지도의 중심 좌표
     radius: radius, // 원의 반지름 (단위 : m)
     fillOpacity: 0.3, // 채움 불투명도
@@ -121,13 +121,13 @@ const addMarker = (position, add) => {
 
   let markerID = group + "_" + shuffle();
   let markerUrl = 'http://image.flaticon.com/icons/svg/787/787535.svg',
-    markerSize = new daum.maps.Size(30, 31),
+    markerSize = new kakao.maps.Size(30, 31),
     markerOption = {
-      offset: new daum.maps.Point(15, 31)
+      offset: new kakao.maps.Point(15, 31)
     };
-  let markerImage = new daum.maps.MarkerImage(markerUrl, markerSize, markerOption);
+  let markerImage = new kakao.maps.MarkerImage(markerUrl, markerSize, markerOption);
 
-  let marker = new daum.maps.Marker({
+  let marker = new kakao.maps.Marker({
     position: position,
     clickable: true,
     draggable: false,
@@ -135,7 +135,7 @@ const addMarker = (position, add) => {
     id: markerID
   })
 
-  let infowindow = new daum.maps.InfoWindow({
+  let infowindow = new kakao.maps.InfoWindow({
     content: content,
     removable: true
   });
@@ -149,11 +149,11 @@ const addMarker = (position, add) => {
   infowindows.push(infowindow);
 
   num += 1;
-  daum.maps.event.addListener(marker, 'click', () => {
+  kakao.maps.event.addListener(marker, 'click', () => {
     // 마커 위에 인포윈도우를 표시합니다
     infowindow.open(map, marker);
   });
-  daum.maps.event.addListener(marker, 'rightclick', (mouseEvent) => {
+  kakao.maps.event.addListener(marker, 'rightclick', (mouseEvent) => {
     let index = markers.map(x => x.id).indexOf(marker.id);
     removeMarker(index);
     countMarker();
@@ -189,7 +189,7 @@ let makePolygon = function(coordinates){
 	var clat1 = 180.0, clat2 = 0.0, clng1 = 180.0, clng2 = 0.0;
 	$.each(coordinates[0], function(seq, coordinate){
 		// path 생성
-		path.push(new daum.maps.LatLng(coordinate[1], coordinate[0]));
+		path.push(new kakao.maps.LatLng(coordinate[1], coordinate[0]));
 		// Center lat, lng 계산
 		clat1 = (coordinate[1] < clat1) ? coordinate[1] : clat1;
 		clat2 = (coordinate[1] > clat2) ? coordinate[1] : clat2;
@@ -198,7 +198,7 @@ let makePolygon = function(coordinates){
 	});
 
 	return {
-		polygon : new daum.maps.Polygon({
+		polygon : new kakao.maps.Polygon({
 	    	map : map,
 	        path: path,
 	        strokeWeight: 1,
